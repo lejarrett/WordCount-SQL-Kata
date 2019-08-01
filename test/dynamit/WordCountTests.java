@@ -12,11 +12,13 @@ class WordCountTests {
 		
 		WordCount wordCount  = new WordCount();
 		
+		@SuppressWarnings("static-access")
 		File testFile = wordCount.getFilePathFromUser();
 		
 		Assert.assertEquals("Paragraph.txt", testFile.toString());
 		
 		
 	}
+	
 
 }
