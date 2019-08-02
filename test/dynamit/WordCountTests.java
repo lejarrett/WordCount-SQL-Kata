@@ -6,19 +6,27 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 class WordCountTests {
+	
+	WordCount testCount  = new WordCount();
+	@SuppressWarnings("static-access")
+	File testFile = testCount.getFilePathFromUser();
+
+
 
 	@Test
-	void FilePathTest() {
-		
-		WordCount wordCount  = new WordCount();
-		
-		@SuppressWarnings("static-access")
-		File testFile = wordCount.getFilePathFromUser();
+	void getFilePathFromUserTest() {		
 		
 		Assert.assertEquals("Paragraph.txt", testFile.toString());
-		
+		Assert.assertEquals(true, testFile.exists());
 		
 	}
 	
+	@Test
+	void wordCountTest() {		
+		
+		Assert.assertEquals(4, testCount.wordCount(testFile));
+		Assert.assertEquals(true, testFile.exists());
+		
+	}
 
 }

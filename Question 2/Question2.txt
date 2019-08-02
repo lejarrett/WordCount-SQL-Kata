@@ -1,0 +1,20 @@
+Prices for television sets
+
+I've been looking for a new TV set. To get the best price, I've been tracking TV sets at Best Buy for the past month to see how the prices fluctuate. To do this, I've been updating a table named TVPrices.
+
+The table has the following columns:
+	TVModel (VARCHAR) 
+	DateUpdated (DATETIME) 
+	Price (MONEY)
+
+Unfortunately, I haven't been very consistent updating my data. Sometimes I've only updated prices for a few TVs, without bothering to update the full set.
+
+Write a set of queries that:
+
+	- Create the table
+	- Read and list the table
+	- Read and list the table sorted by date updated
+	- Return a unique list of TV Models and the most recent price associated with each model
+		Bonus: repeat the last item with a single query
+
+Use the Table.csv file to seed your table with data.
