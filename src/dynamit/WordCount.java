@@ -9,21 +9,28 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
-import java.util.Set;
 
 public class WordCount {
 
 	public static void main(String[] args) {
+		
+		WordCount wordCount = new WordCount();
 
-		File inputFile = getFilePathFromUser();
-		wordCount(inputFile);
+		File inputFile = wordCount.getFilePathFromUser();
+
+		HashMap<String, Integer> mapToSort = wordCount.getWordCount(inputFile);
+
+		wordCount.printOutSortedMap(mapToSort);
 
 	}
 
-	// this method asks the user to input a path to a file.
-	public static File getFilePathFromUser() {
+	/**
+	 * Asks the user for the path to a text file.
+	 * @return returns a File to be used for the Word Count
+	 */
+
+	public File getFilePathFromUser() {
 		Scanner scanner = new Scanner(System.in);
 
 		System.out.print("Please enter a path to file you'd like a word count of >>> \n");
@@ -36,24 +43,25 @@ public class WordCount {
 
 			System.out.println(filePath + " does not exist, please try again.");
 			scanner.close();
-			return null;
-			//System.exit(1);
+			System.exit(1);
 
 		} else if (inputFile.isFile() == false) {
 
 			System.out.println(filePath + " is not a file, please try again.");
 			scanner.close();
-			return null;
-			//System.exit(1);
+			System.exit(1);
 		}
 		scanner.close();
 
 		return inputFile;
 	}
 
-	// this method takes each word, removes characters and numbers, and prints the
-	// count of times it appears.
-	public static void wordCount(File fileToCount) {
+	/**
+	 * Takes each word, removes characters and numbers, adds it to an unsorted map
+	 * @returns a Map to be sorted 
+	 */
+
+	public HashMap<String, Integer> getWordCount(File fileToCount) {
 
 		HashMap<String, Integer> wordMap = new HashMap<String, Integer>();
 
@@ -61,13 +69,9 @@ public class WordCount {
 
 			while (fileScanner.hasNext()) {
 
-				String word = fileScanner.next().replaceAll("[^a-zA-Z ]", "");
+				String word = fileScanner.next().replaceAll("[^a-zA-Z ]", "").toLowerCase(); // lowercase is important so that the program doesn't think for example, "The" and "the" are different words
 
 				if (!wordMap.containsKey(word)) {
-					
-					if (word == (" ")) {
-						System.out.println("YES I AM BLANK");
-					}
 
 					wordMap.put(word, 1);
 				} else {
@@ -77,42 +81,61 @@ public class WordCount {
 				}
 
 			}
-			
-			Map <String, Integer> finalCount = sortByCount(wordMap);
-			
-			for (Map.Entry<String, Integer> ww : finalCount.entrySet()) {
-				
-				System.out.println(ww.getKey() + " " + ww.getValue());
-				
-			}
 
 		} catch (FileNotFoundException e) {
-
+			
+			System.out.println("Whoops. We've encountered an error.");
 			e.printStackTrace();
 		}
+
+		return wordMap;
 	}
-	
-	// this method takes the filled map, and sorts them into a new map based, based on frequency found.
-	public static Map<String, Integer> sortByCount (HashMap<String, Integer> wordMap){
-		
-		List<Map.Entry<String, Integer> > sortedList = new LinkedList<Map.Entry<String,Integer> >(wordMap.entrySet());
-		
-		Collections.sort(sortedList, new Comparator<Map.Entry<String, Integer> > () {
-			
+
+	/**
+	 * Takes a map, and using a Comparator, sorts the instances of the words in the file from greatest, to least.
+	 * @returns a sorted Map
+	 */
+
+	public Map<String, Integer> sortByCount(HashMap<String, Integer> wordMap) {
+
+		List<Map.Entry<String, Integer>> sortedList = new LinkedList<Map.Entry<String, Integer>>(wordMap.entrySet());
+
+		Collections.sort(sortedList, new Comparator<Map.Entry<String, Integer>>() {
+
 			public int compare(Map.Entry<String, Integer> w1, Map.Entry<String, Integer> w2) {
-				return (w2.getValue()).compareTo(w1.getValue()); //simply swap w1 and w2 to change sort order
-				
+				return (w2.getValue()).compareTo(w1.getValue()); // simply swap w1 and w2 to change sort order
+
 			}
 		});
-		
-		HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+
+		HashMap<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
 		for (Map.Entry<String, Integer> word : sortedList) {
-			
-			temp.put(word.getKey(), word.getValue());
+
+			sortedMap.put(word.getKey(), word.getValue());
+		}
+
+		return sortedMap;
+
+	}
+
+	/**
+	 * This method simply takes a sorted Map, and prints out the log to the console
+	 *
+	 */
+
+	public void printOutSortedMap(HashMap<String, Integer> wordMap) {
+
+		Map<String, Integer> finalCount = sortByCount(wordMap);
+
+		for (Map.Entry<String, Integer> ww : finalCount.entrySet()) {
+
+			System.out.println("---------------------");
+			System.out.println(ww.getKey() + " " + ww.getValue());
 		}
 		
-		return temp;
+			System.out.println("---------------------");
+			System.out.println("Total Unique Words: " + finalCount.size());
 		
-	}			
-	
+	}
+
 }
