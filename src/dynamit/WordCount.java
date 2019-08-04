@@ -71,13 +71,20 @@ public class WordCount {
 
 				String word = fileScanner.next().replaceAll("[^a-zA-Z ]", "").toLowerCase(); // lowercase is important so that the program doesn't think for example, "The" and "the" are different words
 
+				if (word.equals("")) {
+					
+					word = fileScanner.next();
+				}
+				
 				if (!wordMap.containsKey(word)) {
 
 					wordMap.put(word, 1);
+					
 				} else {
 
 					int count = wordMap.get(word);
 					wordMap.put(word, count + 1);
+					
 				}
 
 			}
@@ -129,11 +136,11 @@ public class WordCount {
 
 		for (Map.Entry<String, Integer> ww : finalCount.entrySet()) {
 
-			System.out.println("---------------------");
-			System.out.println(ww.getKey() + " " + ww.getValue());
+			System.out.println("-----------");
+			System.out.println(ww.getKey() + ": " + ww.getValue());
 		}
 		
-			System.out.println("---------------------");
+			System.out.println("-----------");
 			System.out.println("Total Unique Words: " + finalCount.size());
 		
 	}

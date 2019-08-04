@@ -7,6 +7,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import dynamit.WordCount;
+
 class WordCountTests {
 	
 	WordCount testCount  = new WordCount();
